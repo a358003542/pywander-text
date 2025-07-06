@@ -1,3 +1,4 @@
+pywander
 python-dateutil
 click
 pyparsing
