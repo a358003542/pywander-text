@@ -2,7 +2,7 @@
 移除多余的空白行
 
 """
-from pywander.text.line import is_blank_line
+from pywander_text.line import is_blank_line
 import os
 
 def remove_redundant_blank_line(in_file, **kwargs):

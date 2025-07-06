@@ -5,7 +5,7 @@
 """
 
 import os
-from pywander.text.line import is_contain_chinese, is_blank_line
+from pywander_text.line import is_contain_chinese, is_blank_line
 
 
 def remove_english_line(in_file, **kwargs):
