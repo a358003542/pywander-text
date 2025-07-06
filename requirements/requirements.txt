@@ -1,0 +1,4 @@
+python-dateutil
+click
+pyparsing
+pypinyin
