@@ -4,3 +4,4 @@ pyparsing
 pypinyin
 opencc
 fastapi
+uvicorn
