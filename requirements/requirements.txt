@@ -1,5 +1,6 @@
 pywander
-python-dateutil
 click
 pyparsing
 pypinyin
+opencc
+fastapi

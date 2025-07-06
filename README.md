@@ -1,6 +1,5 @@
 # pywander
-文本处理相关
-
+文本处理工具集
 
 ## USAGE
 ```
@@ -8,10 +7,14 @@ pip install pywander-text
 ```
 
 
-
-
 ## Console Scripts
+### pywander_text_web
+将会打开网页端，很多文本处理工具整合在里面。
+
+
 ### pywander_text
+命令行工具，在某些情况下用命令行工具会更方便一些。
+
 猜测某个乱码字符串的可能正确编码
 ```text
 pywander_text encoding 濉旂撼鎵樻媺闆呯殑钁ぜ
