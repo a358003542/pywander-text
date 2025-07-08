@@ -6,17 +6,15 @@ from threading import Timer
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
 
 from pywander.web import get_random_available_port
 from pywander_text.tc_sc import tc2sc,sc2tc
+from pywander_text.pinyin import create_pinyin_string
+from pywander_text.country_zh_abbr import get_country_zh_abbr, get_full_country_name
+from pywander_text.encoding import print_encoding_convert_tab
+
 api_app = FastAPI()
 
-
-# 定义请求模型
-class TextConvertRequest(BaseModel):
-    text: str
-    direction: str  # 't2s' 或 's2t'
 
 @api_app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
@@ -24,16 +22,41 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 # 转换API端点
 @api_app.post("/convert")
-async def convert_text(request: TextConvertRequest):
-    try:
-        if request.direction == 't2s':
-            converted_text = tc2sc(request.text)
-        elif request.direction == 's2t':
-            converted_text = sc2tc(request.text)
-        else:
-            raise HTTPException(status_code=400, detail="不支持的转换方向")
+async def convert_text(request: dict):
+    ptype = request.get("ptype")
+    text = request.get("text")
 
-        return {"converted_text": converted_text}
+    try:
+        if ptype == "tc_sc":
+            direction = request.get("direction")
+
+            if direction == 't2s':
+                converted_text = tc2sc(text)
+            elif direction == 's2t':
+                converted_text = sc2tc(text)
+            else:
+                raise HTTPException(status_code=400, detail="不支持的转换方向")
+
+            return {"converted_text": converted_text}
+        elif ptype == "pinyin":
+            hyphen = request.get("pinyinHyphen")
+
+            converted_text = create_pinyin_string(text, hyphen=hyphen)
+            return {"converted_text": converted_text}
+        elif ptype == "country_zh_abbr":
+            is_country_abbr = request.get("isCountryAbbr")
+
+            if is_country_abbr:
+                converted_text = get_full_country_name(text)
+            else:
+                converted_text = get_country_zh_abbr(text)
+
+            return {"converted_text": converted_text}
+        elif ptype == "encoding":
+            converted_text = print_encoding_convert_tab(text)
+            return {"converted_text": converted_text}
+        else:
+            raise HTTPException(status_code=400, detail="未知的处理类型")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

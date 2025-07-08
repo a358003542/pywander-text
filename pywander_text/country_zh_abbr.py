@@ -143,6 +143,11 @@ def get_country_zh_abbr(country):
             return k
     else:
         logger.warning(f'unknown {country}')
-        return None
+        return "未知的国家全称名"
 
 
+def get_full_country_name(country_abbr):
+    if country_abbr in country_zh_abbr_dict:
+        return country_zh_abbr_dict[country_abbr]
+    else:
+        return "未知的国家名缩写"

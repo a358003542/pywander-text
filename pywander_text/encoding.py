@@ -4,6 +4,8 @@
 """
 编码转换问题
 """
+import click
+from tabulate import tabulate
 
 def convert_encoding(origin_string, origin_encoding, to_encoding,
                      errors='ignore'):
@@ -16,11 +18,6 @@ def print_encoding_convert_tab(string, encoding_list=None, errors='ignore'):
     """
     猜测某个乱码中文字符的可能字符编码和内容
     """
-    try:
-        from tabulate import tabulate
-        tabulate_can_not_use = False
-    except Exception as e:
-        tabulate_can_not_use = True
 
     if encoding_list is None:
         encoding_list = ["UTF-8", "GB18030", "GB2312", "GBK", "Windows-1252",
@@ -37,15 +34,13 @@ def print_encoding_convert_tab(string, encoding_list=None, errors='ignore'):
 
             table.append([encoding, origin_encoding, s])
 
-    headers = ['assume_encoding_now', 'assume_encoding_origin', 'recover_string']
-    if tabulate_can_not_use:
-        print('  |'.join(headers))
-        print('-------------------------')
-        for a, b, c in table:
-            print('  |'.join([a, b, c]))
-        print('-------------------------')
-    else:
-        print(tabulate(table, headers=headers, tablefmt="github"))
+    headers = [' 假定现在编码 ', ' 假定原来的编码 ', ' 恢复后的字符串 ']
+
+    result = tabulate(table, headers=headers, tablefmt="plain")
+
+    click.echo(result)
+
+    return result
 
 
 if __name__ == '__main__':

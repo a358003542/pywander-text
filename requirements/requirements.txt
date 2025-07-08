@@ -5,3 +5,4 @@ pypinyin
 opencc
 fastapi
 uvicorn
+tabulate

@@ -4,174 +4,276 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+    <title>文本处理工具集</title>
     <meta name="author" content="wander"/>
     <meta name="copyright" content="wander"/>
     <meta name="description" content="文本处理工具集"/>
 
-    <title>pywander_text 一个便捷的文本处理工具集</title>
-
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!--    <link href="/theme/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">-->
     <link href="css/main.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- 配置Tailwind自定义颜色和字体 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3B82F6',
-                        secondary: '#10B981',
-                        accent: '#8B5CF6',
-                        neutral: '#1F2937',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .transition-height {
-                transition: max-height 0.5s ease;
-            }
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-        }
-    </style>
 </head>
 
-
-<body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- 顶部导航 -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-language text-primary text-2xl"></i>
-                <h1 class="text-xl md:text-2xl font-bold text-neutral">繁體簡體轉換工具</h1>
+<body class="bg-light min-vh-100 d-flex flex-column">
+<!-- 顶部导航 -->
+<header class="bg-white shadow-sm sticky-top">
+    <div class="container py-3">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <span class="fw-bold text-dark fs-4">文本处理工具集</span>
+                </a>
             </div>
+        </nav>
+    </div>
+</header>
+
+<!-- 主要内容区 -->
+<main class="flex-grow container py-8">
+    <!-- 功能选项卡 -->
+    <div class="card mb-8 animate-fade-in">
+        <div class="card-header bg-white p-0 border-bottom-0">
+            <ul class="nav nav-tabs" id="functionTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-s2t" data-bs-toggle="tab" data-bs-target="#content-s2t"
+                            type="button" role="tab">
+                        简繁转换
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-pinyin" data-bs-toggle="tab" data-bs-target="#content-pinyin"
+                            type="button" role="tab">
+                        汉字转拼音
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-abbr" data-bs-toggle="tab" data-bs-target="#content-abbr"
+                            type="button" role="tab">
+                        国籍缩写规范
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-regex" data-bs-toggle="tab" data-bs-target="#content-regex"
+                            type="button" role="tab">
+                        正则替换
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-encoding" data-bs-toggle="tab" data-bs-target="#content-encoding"
+                            type="button" role="tab">
+                        字符乱码恢复
+                    </button>
+                </li>
+
+
+            </ul>
         </div>
-    </header>
 
-    <!-- 主要内容区 -->
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- 转换类型选择 -->
-            <div class="bg-gray-50 p-4 flex border-b border-gray-200">
-                <button id="trad-to-simp" class="flex-1 py-2 px-4 rounded-lg bg-primary text-white font-medium">
-                    <i class="fa fa-exchange mr-2"></i>繁體 → 簡體
-                </button>
-                <button id="simp-to-trad" class="flex-1 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors">
-                    <i class="fa fa-exchange mr-2"></i>簡體 → 繁體
-                </button>
+        <div class="card-body p-6">
+            <div class="tab-content" id="functionTabsContent">
+                <!-- 简繁转换 -->
+                <div class="tab-pane fade show active" id="content-s2t" role="tabpanel">
+                    <!-- 转换类型选择 -->
+                    <div class="mb-6">
+                        <div class="btn-group btn-group-toggle w-100" data-bs-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="convertType" id="trad-to-simp" autocomplete="off" checked>
+                                繁體 → 简体
+                            </label>
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="convertType" id="simp-to-trad" autocomplete="off">
+                                简体 → 繁體
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 汉字转拼音 -->
+                <div class="tab-pane fade" id="content-pinyin" role="tabpanel">
+                    <div class="mb-6">
+                        <label for="hyphen" class="form-label">连接符</label>
+                        <input type="text" id="hyphen" class="form-control" aria-describedby="hyphenHelpBlock"
+                               value="-">
+                        <div id="hyphenHelpBlock" class="form-text">
+                            设置连接符号
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 姓名缩写 -->
+                <div class="tab-pane fade" id="content-abbr" role="tabpanel">
+                    <div class="mb-6">
+
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="is_country_abbr">是否已经是缩写</label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="is_country_abbr"
+                                   aria-describedby="abbrHelpBlock">
+                            <div id="abbrHelpBlock" class="form-text">
+                                不是缩写则认为输入的是国籍全称，返回推荐的国籍缩写；给定缩写则返回对应的国籍全称。
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 正则替换 -->
+                <div class="tab-pane fade" id="content-regex" role="tabpanel">
+                    <div class="mb-4">
+                        <label class="form-label fw-medium">正则表达式</label>
+                        <input type="text" id="regex-input" class="form-control" placeholder="例如: [a-z]+">
+                    </div>
+                    <div class="mb-6">
+                        <label class="form-label fw-medium">替换为</label>
+                        <input type="text" id="replace-input" class="form-control" placeholder="替换文本">
+                    </div>
+                </div>
+
+                <!-- 字符乱码恢复 -->
+                <div class="tab-pane fade" id="content-encoding" role="tabpanel">
+                    <div class="mb-6">
+                    </div>
+                </div>
+
             </div>
 
-            <!-- 输入区域 -->
-            <div class="p-6 space-y-6">
-                <div class="space-y-2">
-                    <label for="input-text" class="block text-sm font-medium text-gray-700">输入文字</label>
-                    <div class="relative">
+            <!-- 共享的输入区域 -->
+            <div class="mb-6">
+                <label for="input-text" class="form-label fw-medium">输入文字</label>
+                <div class="form-floating">
                         <textarea
-                            id="input-text"
-                            class="w-full h-40 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
-                            placeholder="請輸入繁體中文..."
+                                id="input-text"
+                                class="form-control rounded-3 border border-secondary"
+                                placeholder="请输入需要处理的文字..."
+                                style="height: 200px; resize: none;"
                         ></textarea>
-                        <div class="absolute bottom-3 right-3 text-xs text-gray-500">
-                            <span id="char-count">0</span> 字符
-                        </div>
-                    </div>
+                    <label for="input-text">请输入需要处理的文字...</label>
                 </div>
-
-                <!-- 按钮区域 -->
-                <div class="flex justify-center space-x-4">
-                    <button id="clear-btn" class="py-2 px-6 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center">
-                        <i class="fa fa-eraser mr-2"></i>清空
-                    </button>
-                    <button id="convert-btn" class="py-2 px-6 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        <i class="fa fa-refresh mr-2"></i>开始转换
-                    </button>
-                </div>
-
-                <!-- 结果区域 -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">转换结果</label>
-                    <div class="relative">
-                        <div id="result-container" class="w-full min-h-[10rem] p-4 border border-gray-300 rounded-lg bg-gray-50 overflow-auto">
-                            <p class="text-gray-400 italic">转换结果将显示在这里...</p>
-                        </div>
-                        <button id="copy-btn" class="absolute bottom-3 right-3 py-1.5 px-3 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50 transition-colors">
-                            <i class="fa fa-copy mr-1"></i>复制
-                        </button>
-                    </div>
+                <div class="d-flex justify-content-between mt-2 text-sm text-secondary">
+                    <span id="char-count">0 字符</span>
+                    <span id="process-status" class="text-secondary">準備就緒</span>
                 </div>
             </div>
 
-            <!-- 转换信息 -->
-            <div class="bg-gray-50 p-4 border-t border-gray-200 text-sm text-gray-600">
-                <div class="flex items-center justify-between">
+            <!-- 按钮区域 -->
+            <div class="d-flex justify-content-center gap-4 mb-6">
+                <button id="clear-btn" class="btn btn-outline-secondary d-flex align-items-center">
+                    清空
+                </button>
+                <button id="process-btn" class="btn btn-primary shadow-lg d-flex align-items-center">
+                    执行处理
+                </button>
+            </div>
+
+            <!-- 结果区域 -->
+            <div>
+                <label class="form-label fw-medium">处理结果</label>
+                <div class="form-floating">
+                    <textarea id="result-container"
+                              class="form-control bg-light rounded-3 border border-secondary overflow-auto"
+                              placeholder="处理结果将显示在这里..."
+                              style="height: 200px; resize: none;" readonly>
+                    </textarea>
+                    <label>处理结果</label>
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                    <button id="copy-btn" class="btn btn-outline-secondary btn-sm d-flex align-items-center">
+                        复制结果
+                    </button>
+                </div>
+            </div>
+
+            <!-- 处理信息 -->
+            <div class="mt-6 pt-4 border-top border-light">
+                <div class="d-flex justify-content-between text-sm">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-1">
+                            <span id="process-time">0.00s</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <span id="process-count">0</span>
+                            <span class="text-secondary">次处理</span>
+                        </div>
+                    </div>
                     <div>
-                        <span id="convert-status" class="text-gray-500">準備就緒</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="flex items-center space-x-1">
-                            <i class="fa fa-clock-o text-gray-400"></i>
-                            <span id="convert-time">0.00s</span>
-                        </div>
-                        <div class="flex items-center space-x-1">
-                            <i class="fa fa-history text-gray-400"></i>
-                            <span id="convert-count">0</span>
+                        <div class="progress w-40" style="height: 8px;">
+                            <div class="progress-bar" id="progress-bar" role="progressbar" style="width: 0%"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 功能说明 -->
-        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-lg font-semibold text-neutral mb-4 flex items-center">
-                <i class="fa fa-info-circle text-primary mr-2"></i>关于简繁转换
+    <!-- 功能说明 -->
+    <div class="card animate-fade-in" style="animation-delay: 0.2s;">
+        <div class="card-header bg-white">
+            <h2 class="fs-5 fw-bold mb-0 d-flex align-items-center">
+                关于文本处理工具
             </h2>
-            <div class="space-y-3 text-gray-700">
-                <p>本工具使用先进的简繁字体映射算法，能够准确地将繁体中文转换为简体中文，或从简体转换为繁体。</p>
-                <p>支持常见的简体中文(GB2312)和繁体中文(Big5)字符集，包含超过2万多个字符的映射关系。</p>
-                <p>适用于文本翻译、文档转换、网站本地化等多种场景。</p>
-            </div>
         </div>
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="bg-neutral text-white py-6">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <div class="flex items-center space-x-2">
-                        <i class="fa fa-language text-primary"></i>
-                        <span class="font-medium">繁體簡體轉換工具</span>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="bg-primary/10 p-4 rounded-3 h-100">
+                        <div class="text-primary fs-4 mb-3">
+                        </div>
+                        <h3 class="fs-5 fw-semibold mb-2">简繁转换</h3>
+                        <p class="text-secondary">支持超过2万多个简繁字体的精准映射，覆盖GB2312、Big5等常见字符集。</p>
                     </div>
-                    <p class="text-gray-400 text-sm mt-1">准确、快速的简繁字体转换服务</p>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="bg-primary/10 p-4 rounded-3 h-100">
+                        <div class="text-primary fs-4 mb-3">
+                        </div>
+                        <h3 class="fs-5 fw-semibold mb-2">汉字转拼音</h3>
+                        <p class="text-secondary">支持带音调、不带音调和首字母拼音转换，适用于各种场景的拼音需求。</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="bg-primary/10 p-4 rounded-3 h-100">
+                        <div class="text-primary fs-4 mb-3">
+                        </div>
+                        <h3 class="fs-5 fw-semibold mb-2">国籍缩写规范</h3>
+                        <p class="text-secondary">
+                            一般国外著作作者前面需要加上国籍简写，但这个没有一个标准，本应用试图建立一种规范。</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bg-primary/10 p-4 rounded-3 h-100">
+                        <div class="text-primary fs-4 mb-3">
+                        </div>
+                        <h3 class="fs-5 fw-semibold mb-2">正则替换</h3>
+                        <p class="text-secondary">
+                            强大的正则表达式引擎，支持复杂文本模式匹配和替换，满足专业文本处理需求。</p>
+                    </div>
                 </div>
 
-            </div>
-            <div class="mt-6 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
-                <p>© 2025 繁體簡體轉換工具. 保留所有權利.</p>
+                <div class="col-md-3">
+                    <div class="bg-primary/10 p-4 rounded-3 h-100">
+                        <div class="text-primary fs-4 mb-3">
+                        </div>
+                        <h3 class="fs-5 fw-semibold mb-2">字符乱码恢复</h3>
+                        <p class="text-secondary">
+                            通过一系列可能的字符编码解码步骤来试图恢复字符乱码</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+</main>
 
+<!-- 页脚 -->
+<footer class="bg-dark text-white py-8">
+    <div class="container">
+        <div class="mt-8 pt-6 border-top border-secondary text-center text-secondary">
+            <p style="margin-bottom:0rem;">感谢豆包AI提供支持</p>
+        </div>
+    </div>
+</footer>
 
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
-<!--<script src="/theme/moment/js/moment.min.js"></script>-->
-<!--<script src="/theme/lodash/js/lodash.min.js"></script>-->
+
 </body>
 </html>
